@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Start</title>
+</head>
+  <script src="./lib/pixi.min.js"></script>
+  <script src="./actor.js"></script>
+  <script src="./menu.js"></script>
+  <style>* {padding: 0; margin: 0}</style>
+<body>
+  <script type="text/javascript">
+    let type = "WebGL"
+    if(!PIXI.utils.isWebGLSupported()){
+      type = "canvas"
+    }
+
+    PIXI.utils.sayHello(type)
+
+    //Create a Pixi Application
+    let app = new PIXI.Application({width: 256, height: 256});
+    app.renderer.view.style.position = "absolute";
+    app.renderer.view.style.display = "block";
+    app.renderer.autoDensity = true;
+    app.renderer.resize(window.innerWidth, window.innerHeight);
+
+
+    let cat
+    let semicircle
+    let direction = 1
+
+    const gameLoop = (delta) => {
+
+      //Move the cat 1 pixel
+      cat.x += direction;
+      semicircle.x += direction
+
+      if(cat.x > 400) direction = -1
+      if(cat.x < 20) direction = 1
+
+      //Optionally use the `delta` value
+      //cat.x += 1 + delta;
+    }
+
+    const arrow = new PIXI.Graphics()
+    arrow.lineStyle(2, 0x661122, 1)
+    arrow.moveTo(250, 250);
+    arrow.lineTo(650, 30);
+
+    app.stage.addChild(arrow)
+
+    app.stage.interactive = true
+    app.stage
+      .on('pointerdown', () => {
+        console.log('xxx')
+      })
+      .on('pointermove', (data) => {
+        debugger
+        console.log('mmm')
+      })
+
+    app.stage.hitArea = new PIXI.Rectangle(0, 0, window.innerWidth, window.innerHeight);
+
+
+    app.stage.addChild(createActor(250,250))
+
+
+
+
+
+
+    //This `setup` function will run when the image has loaded
+    const setup = () => {
+      //Create the cat sprite
+      cat = new PIXI.Sprite(PIXI.Loader.shared.resources["images/cat.png"].texture);
+
+      //Change the sprite's position
+      cat.x = 96;
+      cat.y = 96;
+
+      cat.anchor.x = 0.5;
+      cat.anchor.y = 0.5;
+      cat.rotation = 0.5;
+
+      //Add the cat to the stage
+      app.stage.addChild(cat);
+
+      semicircle = new PIXI.Graphics();
+      //semicircle.beginFill(0xff0000);
+      semicircle.lineStyle(3, 0xffffff);
+      semicircle.arc(0, 0, 50, 0, .9*2*Math.PI); // cx, cy, radius, startAngle, endAngle
+      semicircle.position = {x: 96, y: 96};
+
+      app.stage.addChild(semicircle);
+
+      //Start the game loop
+      app.ticker.add(delta => gameLoop(delta));
+    }
+
+    const loadProgressHandler = (loader, resource) => {
+      //Display the file `url` currently being loaded
+      console.log("loading: " + resource.url);
+
+      //Display the percentage of files currently loaded
+      console.log("progress: " + loader.progress + "%");
+
+      //If you gave your files names as the first argument
+      //of the `add` method, you can access them like this
+      //console.log("loading: " + resource.name);
+    }
+
+    //load an image and run the `setup` function when it's done
+    PIXI.Loader.shared
+      .add("images/cat.png")
+      .on("progress", loadProgressHandler)
+      .load(setup);
+
+
+    //Add the canvas that Pixi automatically created for you to the HTML document
+    document.body.appendChild(app.view);
+  </script>
+</body>
+</html>
