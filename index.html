@@ -5,6 +5,7 @@
   <title>Start</title>
 </head>
   <script src="./lib/pixi.min.js"></script>
+  <script src="./board.js"></script>
   <script src="./actor.js"></script>
   <script src="./menu.js"></script>
   <style>* {padding: 0; margin: 0}</style>
@@ -62,8 +63,8 @@
     app.stage.hitArea = new PIXI.Rectangle(0, 0, window.innerWidth, window.innerHeight);
 
 
+    app.stage.addChild(createBoard(0,0,600,400))
     app.stage.addChild(createActor(250,250))
-
 
 
 
