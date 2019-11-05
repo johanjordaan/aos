@@ -1,5 +1,10 @@
 node_modules
-yarn-error.log
+build
+coverage
+.nyc_output
 
 lib/*.js
 lib/*.map
+
+yarn-error.log
+
