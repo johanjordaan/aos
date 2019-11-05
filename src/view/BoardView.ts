@@ -1,13 +1,14 @@
 import { BoardModel } from '../model/BoardModel'
-import * as PIXI from '../../lib/pixi.min.js'
+import * as PIXI from 'pixi.js'
 
 export class BoardView {
   model:BoardModel
   constructor(model:BoardModel) {
     this.model = model
   }
+  x = new PIXI.Container()
   
-  public createBoard(x,y,w,h) {
+  /*public createBoard(x,y,w,h) {
     const board = new PIXI.Container()
 
     board.x = x
@@ -23,7 +24,7 @@ export class BoardView {
     board.addChild(gfx)
 
     return board
-  }
+  }*/
 
   
 };
